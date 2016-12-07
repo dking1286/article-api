@@ -40,8 +40,11 @@ function transpileFiles(srcDirectory, distDirectory) {
 }
 
 
-gulp.task('transpile', () =>
-  transpileFiles(directories.SRC, directories.DIST));
+gulp.task('transpile', () => {
+  transpileFiles(directories.SRC, directories.DIST);
+  console.log('Updated build!');
+});
+
 
 gulp.task('watch', () =>
   watch('src', () => transpileFiles(directories.SRC, directories.DIST)));
