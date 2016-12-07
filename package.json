@@ -4,8 +4,32 @@
   "description": "A RESTful API that allows users to interact with an article database",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/tape -r babel-register spec/**/*.js | node_modules/.bin/faucet",
-    "build:watch": "node_modules/gulp/bin/gulp.js"
+    "test": "better-npm-run test",
+    "build:watch": "node_modules/gulp/bin/gulp.js",
+    "start:dev": "better-npm-run start:dev",
+    "start:prod": "better-npm-run start:prod"
+  },
+  "betterScripts": {
+    "test": {
+      "command": "node_modules/.bin/tape spec/helpers/*.js spec/*.spec.js",
+      "env": {
+        "NODE_ENV": "test",
+        "DATABASE_URL": "developer://localhost/article_api_test"
+      }
+    },
+    "start:dev": {
+      "command": "node_modules/.bin/nodemon dist/index.js",
+      "env": {
+        "NODE_ENV": "development",
+        "DATABASE_URL": "developer://localhost/article_api"
+      }
+    },
+    "start:prod": {
+      "command": "node dist/index.js",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -19,6 +43,7 @@
   },
   "homepage": "https://github.com/dking1286/article-api#readme",
   "dependencies": {
+    "better-npm-run": "0.0.13",
     "express": "^4.14.0",
     "knex": "^0.12.6",
     "pg": "^6.1.0"
