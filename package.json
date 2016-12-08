@@ -66,6 +66,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-watch": "^4.3.11",
     "nodemon": "^1.11.0",
+    "request": "^2.79.0",
     "supertest": "^2.0.1",
     "tape": "^4.6.3"
   }
