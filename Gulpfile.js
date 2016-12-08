@@ -6,8 +6,8 @@ const notify = require('gulp-notify');
 const file = require('file');
 
 const directories = {
-  SRC: './src',
-  DIST: './dist',
+  SRC: 'src',
+  DIST: 'dist',
 };
 
 function handleErrors(...args) {
@@ -29,12 +29,14 @@ function transpileFiles(srcDirectory, distDirectory) {
     files.forEach((filename) => {
       if (!isJavascript(filename)) return;
 
+      const destination = dirPath.replace(srcDirectory, distDirectory);
+
       gulp.src(filename)
         .on('error', handleErrors)
         .pipe(babel({
           presets: ['es2015', 'airbnb', 'stage-0'],
         }))
-        .pipe(gulp.dest(distDirectory));
+        .pipe(gulp.dest(destination));
     });
   });
 }
