@@ -39,3 +39,5 @@ Author {
 
 Questions:
   Can an article have more than 1 author?
+  What fields of an Article should be able to be updated? Just the title and body? Or should authorship be able to be transferred as well?
+  
