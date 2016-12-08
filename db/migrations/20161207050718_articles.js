@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
       table.timestamp('published_at').defaultTo(knex.fn.now());
 
       table.string('title').notNullable();
-      table.string('body').notNullable();
+      table.text('body').notNullable();
       table.string('media_url');
       table.integer('likes_count');
       table.integer('author_id');
