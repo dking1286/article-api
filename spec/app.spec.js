@@ -3,20 +3,10 @@ import request from 'supertest';
 
 import knex from '../db/knex';
 import app from '../src/index';
-
-function setup() {
-  return new Promise((resolve, reject) => {
-    knex.migrate.rollback()
-    .then(() => knex.migrate.latest())
-    .then(() => knex.seed.run())
-    .then(() => resolve())
-    .catch(error => reject(error));
-  });
-}
-
+import { setup } from './helpers/db_helpers';
 
 test('articles route protected on GET request', (assert) => {
-  setup().then(() => {
+  setup(knex).then(() => {
     request(app)
       .get('/articles')
       .end((error, response) => {
@@ -33,7 +23,7 @@ test('articles route protected on GET request', (assert) => {
 });
 
 test('articles route protected on POST request', (assert) => {
-  setup().then(() => {
+  setup(knex).then(() => {
     request(app)
       .post('/articles')
       .end((error, response) => {
@@ -50,7 +40,7 @@ test('articles route protected on POST request', (assert) => {
 });
 
 test('articles route responds 403 on PUT request', (assert) => {
-  setup().then(() => {
+  setup(knex).then(() => {
     request(app)
       .put('/articles')
       .end((error, response) => {
@@ -67,7 +57,7 @@ test('articles route responds 403 on PUT request', (assert) => {
 });
 
 test('responds 403 on DELETE request', (assert) => {
-  setup().then(() => {
+  setup(knex).then(() => {
     request(app)
       .delete('/articles')
       .end((error, response) => {

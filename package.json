@@ -11,7 +11,7 @@
   },
   "betterScripts": {
     "test": {
-      "command": "node_modules/.bin/tape spec/helpers/*.js spec/*.spec.js | faucet",
+      "command": "node_modules/.bin/tape spec/setup/*.js spec/*.spec.js | faucet",
       "env": {
         "NODE_ENV": "test",
         "DATABASE_URL": "developer://localhost/article_api_test"
