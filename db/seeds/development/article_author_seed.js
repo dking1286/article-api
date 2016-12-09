@@ -15,14 +15,14 @@ exports.seed = function(knex, Promise) {
 };
 
 function insertAuthorAndArticle(knex, article) {
-  const { title, body, media_url, likes_count, author } = article;
+  const { title, body, media_url, likes_count, author, summary } = article;
   const { name, icon_url } = author;
 
   return knex('author').insert({ name, icon_url })
     .then(() => knex('author').select('id').where({ name }))
     .then(([{ id }]) => {
       return knex('article').insert({
-        title, body, media_url, likes_count, author_id: id,
+        title, body, media_url, likes_count, summary, author_id: id,
       });
     });
 }

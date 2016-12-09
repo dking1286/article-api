@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
 
       table.string('title').notNullable();
       table.text('body').notNullable();
+      table.text('summary').notNullable();
       table.string('media_url');
       table.integer('likes_count');
       table.integer('author_id');
