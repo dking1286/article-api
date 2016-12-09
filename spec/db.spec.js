@@ -31,7 +31,7 @@ test('author database table columns', (assert) => {
 test('article database table columns', (assert) => {
   setup(knex).then(() => {
     const expectedColumns = [
-      'id', 'title', 'body', 'media_url', 'published_at', 'likes_count', 'author_id',
+      'id', 'title', 'body', 'media_url', 'published_at', 'likes_count', 'author_id', 'summary',
     ];
 
     const columnChecks = expectedColumns.map((column) => {
