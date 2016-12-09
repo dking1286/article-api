@@ -44,6 +44,8 @@
   "homepage": "https://github.com/dking1286/article-api#readme",
   "dependencies": {
     "better-npm-run": "0.0.13",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "knex": "^0.12.6",
     "pg": "^6.1.0"
