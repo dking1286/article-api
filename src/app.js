@@ -6,7 +6,10 @@ import knex from '../db/knex';
 import createArticlesController from './controllers/articles_controller';
 import { notFound, forbidden } from './middleware/default_responses';
 import { needOAuthToken } from './middleware/authentication';
-import { validateNewArticleData } from './middleware/validation';
+import {
+  validateNewArticleData,
+  validateUpdateArticleData,
+} from './middleware/validation';
 
 const app = express();
 const articlesController = createArticlesController(knex);
@@ -42,15 +45,19 @@ app.get('/article/:id', needOAuthToken, (req, res) => {
 
 app.post('/article', forbidden);
 
-app.put('/article', needOAuthToken, (req, res) => {
+app.put('/article/:id', needOAuthToken, validateUpdateArticleData, (req, res) => {
+  const { title, body, media_url, summary } = req.body;
 
+  articlesController.updateArticle(req.params.id, {
+    title, body, media_url, summary,
+  })
+    .then(article => res.status(200).json(article));
 });
 
-app.delete('/article', needOAuthToken, (req, res) => {
-
+app.delete('/article/:id', needOAuthToken, (req, res) => {
+  articlesController.deleteArticle(req.params.id)
+    .then(() => res.status(200).send());
 });
-
-
 
 
 app.use(notFound);

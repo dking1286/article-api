@@ -71,9 +71,37 @@ export default function createArticlesController(knex) {
         .then(() => {
           return knex('article')
             .select('*')
-            .where(toInsert)
-            .then(results => results[0]);
-        });
+            .where(toInsert);
+        })
+        .then(results => results[0]);
+    },
+
+    updateArticle(id, { title, body, media_url, summary }) {
+      const input = { title, body, media_url, summary };
+
+      const toUpdate = Object.keys(input).reduce((output, key) => {
+        if (input[key] !== undefined) {
+          output[key] = input[key];
+        }
+
+        return output;
+      }, {});
+
+      return knex('article')
+        .where({ id })
+        .update(toUpdate)
+        .then(() => {
+          return knex('article')
+            .select('*')
+            .where({ id });
+        })
+        .then(results => results[0]);
+    },
+
+    deleteArticle(id) {
+      return knex('article')
+        .where({ id })
+        .del()
     },
   };
 }
