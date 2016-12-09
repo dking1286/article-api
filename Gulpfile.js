@@ -2,8 +2,7 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const watch = require('gulp-watch');
 const notify = require('gulp-notify');
-
-const file = require('file');
+const path = require('path');
 
 const directories = {
   SRC: 'src',
@@ -23,22 +22,12 @@ function isJavascript(filename) {
 }
 
 function transpileFiles(srcDirectory, distDirectory) {
-  file.walk(srcDirectory, (error, dirPath, dirs, files) => {
-    if (error) throw new Error(error);
-
-    files.forEach((filename) => {
-      if (!isJavascript(filename)) return;
-
-      const destination = dirPath.replace(srcDirectory, distDirectory);
-
-      gulp.src(filename)
-        .on('error', handleErrors)
-        .pipe(babel({
-          presets: ['es2015', 'airbnb', 'stage-0'],
-        }))
-        .pipe(gulp.dest(destination));
-    });
-  });
+  gulp.src(path.join(srcDirectory, '**/*.js'))
+    .on('error', handleErrors)
+    .pipe(babel({
+      presets: ['es2015', 'airbnb', 'stage-0'],
+    }))
+    .pipe(gulp.dest(distDirectory));
 }
 
 
