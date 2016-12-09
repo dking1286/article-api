@@ -2,14 +2,20 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
+import knex from '../db/knex';
+import createArticlesController from './controllers/articles_controller';
 import { notFound, forbidden } from './middleware/default_responses';
 import { needOAuthToken } from './middleware/authentication';
 
 const app = express();
+const articlesController = createArticlesController(knex);
+
+app.use(cookieParser());
 
 
 app.get('/articles', needOAuthToken, (req, res) => {
-  res.status(200).send();
+  articlesController.getArticlesList()
+    .then((articles) => res.status(200).json(articles));
 });
 
 app.post('/articles', needOAuthToken, (req, res) => {
@@ -39,8 +45,6 @@ app.delete('/article', needOAuthToken, (req, res) => {
 
 
 
-app.use((req, res) => {
-  res.status(404).send('The requested resource was not found');
-});
+app.use(notFound);
 
 export default app;
