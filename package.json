@@ -14,14 +14,14 @@
       "command": "node_modules/.bin/tape spec/setup/*.js spec/*.spec.js | faucet",
       "env": {
         "NODE_ENV": "test",
-        "DATABASE_URL": "developer://localhost/article_api_test"
+        "PORT": 8080
       }
     },
     "start:dev": {
       "command": "node_modules/.bin/nodemon dist/index.js",
       "env": {
         "NODE_ENV": "development",
-        "DATABASE_URL": "developer://localhost/article_api"
+        "PORT": 3000
       }
     },
     "start:prod": {

@@ -163,7 +163,7 @@ test('articles route POST request creates new article', (assert) => {
   });
 });
 
-test('articles route responds 403 on PUT request', (assert) => {
+test('articles route responds 403 on PUT request without id', (assert) => {
   setup(knex).then(() => {
     request(app)
       .put('/articles')
@@ -171,7 +171,7 @@ test('articles route responds 403 on PUT request', (assert) => {
         const actual = response.status;
         const expected = 403;
 
-        assert.equal(expected, actual,
+        assert.equal(actual, expected,
           'PUT request should be forbidden to /articles route');
 
         assert.end();
@@ -180,7 +180,7 @@ test('articles route responds 403 on PUT request', (assert) => {
   .catch(error => assert.end(error));
 });
 
-test('articles route responds 403 on DELETE request', (assert) => {
+test('articles route responds 403 on DELETE request without id', (assert) => {
   setup(knex).then(() => {
     request(app)
       .delete('/articles')
@@ -200,7 +200,7 @@ test('articles route responds 403 on DELETE request', (assert) => {
 test('article route protected on GET request', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .get('/article/1')
+      .get('/articles/1')
       .end((error, response) => {
         const actual = response.status;
         const expected = 401;
@@ -214,28 +214,10 @@ test('article route protected on GET request', (assert) => {
   .catch(error => assert.end(error));
 });
 
-test('article route GET request requires id parameter in url', (assert) => {
+test('article route specific GET request responds with JSON', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .get('/article')
-      .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
-      .end((error, response) => {
-        if (error) return assert.end(error);
-
-        const actual = response.status;
-        const expected = 404;
-
-        assert.equal(actual, expected,
-          'article route GET request should respond with 404 when no id provided');
-        assert.end();
-      });
-  });
-});
-
-test('article route GET request responds with JSON', (assert) => {
-  setup(knex).then(() => {
-    request(app)
-      .get('/article/1')
+      .get('/articles/1')
       .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
       .expect(200)
       .end((error, response) => {
@@ -252,10 +234,10 @@ test('article route GET request responds with JSON', (assert) => {
   });
 });
 
-test('article route GET request data format', (assert) => {
+test('articles route specific GET request data format', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .get('/article/1')
+      .get('/articles/1')
       .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
       .expect(200)
       .end((error, response) => {
@@ -285,27 +267,10 @@ test('article route GET request data format', (assert) => {
   });
 });
 
-test('article route responds 403 on POST request', (assert) => {
+test('articles route protected on PUT request', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .post('/article')
-      .end((error, response) => {
-        const actual = response.status;
-        const expected = 403;
-
-        assert.equal(expected, actual,
-          'POST request should be forbidden to /article route');
-
-        assert.end();
-      });
-  })
-  .catch(error => assert.end(error));
-});
-
-test('article route protected on PUT request', (assert) => {
-  setup(knex).then(() => {
-    request(app)
-      .put('/article/1')
+      .put('/articles/1')
       .end((error, response) => {
         if (error) return assert.end(error);
 
@@ -320,28 +285,10 @@ test('article route protected on PUT request', (assert) => {
   });
 });
 
-test('article route PUT request requires id parameter in url', (assert) => {
+test('articles route PUT request validates incoming data', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .put('/article')
-      .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
-      .end((error, response) => {
-        if (error) return assert.end(error);
-
-        const actual = response.status;
-        const expected = 404;
-
-        assert.equal(actual, expected,
-          'article route PUT request should respond with 404 when no id provided');
-        assert.end();
-      });
-  });
-});
-
-test('article route PUT request validates incoming data', (assert) => {
-  setup(knex).then(() => {
-    request(app)
-      .put('/article/1')
+      .put('/articles/1')
       .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
       .send({ blah: 'blah' })
       .end((error, response) => {
@@ -351,21 +298,21 @@ test('article route PUT request validates incoming data', (assert) => {
         const expected = 400;
 
         assert.equal(actual, expected,
-          'article route should respond with 400 when invalid data is provided')
+          'articles route should respond with 400 when invalid data is provided')
         
         assert.end();
       });
   });
 });
 
-test('article route PUT request should modify article record', (assert) => {
+test('articles route PUT request should modify article record', (assert) => {
   setup(knex).then(() => {
     knex('article').where({ id: 1 }).select().then(([originalArticle]) => {
       const oldTitle = originalArticle.title;
       const newTitle = 'This is a new title';
 
       request(app)
-        .put('/article/1')
+        .put('/articles/1')
         .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
         .send({ title: newTitle })
         .expect(200)
@@ -385,10 +332,10 @@ test('article route PUT request should modify article record', (assert) => {
   });
 });
 
-test('article route protected on DELETE request', (assert) => {
+test('articles route protected on DELETE request', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .delete('/article/1')
+      .delete('/articles/1')
       .end((error, response) => {
         if (error) return assert.end(error);
 
@@ -403,10 +350,10 @@ test('article route protected on DELETE request', (assert) => {
   });
 });
 
-test('article route DELETE request deletes the specified article', (assert) => {
+test('articles route DELETE request deletes the specified article', (assert) => {
   setup(knex).then(() => {
     request(app)
-      .delete('/article/1')
+      .delete('/articles/1')
       .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
       .expect(200)
       .end((error, response) => {
@@ -424,24 +371,6 @@ test('article route DELETE request deletes the specified article', (assert) => {
             
             assert.end();
           });
-      });
-  });
-});
-
-test('article route DELETE request requires id parameter in url', (assert) => {
-  setup(knex).then(() => {
-    request(app)
-      .delete('/article')
-      .set('Cookie', [`Auth-token=${AUTH_TOKEN}`])
-      .end((error, response) => {
-        if (error) return assert.end(error);
-
-        const actual = response.status;
-        const expected = 404;
-
-        assert.equal(actual, expected,
-          'article route DELETE request should respond with 404 when no id provided');
-        assert.end();
       });
   });
 });

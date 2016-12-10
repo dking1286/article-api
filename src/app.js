@@ -23,6 +23,12 @@ app.get('/articles', needOAuthToken, (req, res) => {
     .then(articles => res.status(200).json(articles));
 });
 
+app.get('/articles/:id', needOAuthToken, (req, res) => {
+  articlesController.getArticle(req.params.id)
+    .then(article => res.status(200).json(article));
+});
+
+
 app.post('/articles', needOAuthToken, validateNewArticleData, (req, res) => {
   const { title, body, summary, author_id, media_url } = req.body;
 
@@ -32,20 +38,10 @@ app.post('/articles', needOAuthToken, validateNewArticleData, (req, res) => {
     .then(newRecord => res.status(200).json(newRecord));
 });
 
+
 app.put('/articles', forbidden);
 
-app.delete('/articles', forbidden);
-
-
-
-app.get('/article/:id', needOAuthToken, (req, res) => {
-  articlesController.getArticle(req.params.id)
-    .then(article => res.status(200).json(article));
-});
-
-app.post('/article', forbidden);
-
-app.put('/article/:id', needOAuthToken, validateUpdateArticleData, (req, res) => {
+app.put('/articles/:id', needOAuthToken, validateUpdateArticleData, (req, res) => {
   const { title, body, media_url, summary } = req.body;
 
   articlesController.updateArticle(req.params.id, {
@@ -54,7 +50,10 @@ app.put('/article/:id', needOAuthToken, validateUpdateArticleData, (req, res) =>
     .then(article => res.status(200).json(article));
 });
 
-app.delete('/article/:id', needOAuthToken, (req, res) => {
+
+app.delete('/articles', forbidden);
+
+app.delete('/articles/:id', needOAuthToken, (req, res) => {
   articlesController.deleteArticle(req.params.id)
     .then(() => res.status(200).send());
 });
