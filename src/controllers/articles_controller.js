@@ -101,7 +101,7 @@ export default function createArticlesController(knex) {
     deleteArticle(id) {
       return knex('article')
         .where({ id })
-        .del()
+        .del();
     },
   };
 }
