@@ -1,0 +1,43 @@
+Endpoints should provide a RESTful interface allowing clients to interact with an articles resource corresponding to the the schema described below. (Your app may not simply serve or proxy requests to the static JSON file!)
+
+The API should allow a client to:
+List all articles
+Get a specific article
+Partially update an article
+Delete an article
+
+All endpoints should be protected from public access by default. Sending the OAuth "bearer" token: 54V8pF622M63y6RMVZy8bmS8sGmwv4r83RCuP6Fq with any request should grant access.
+
+Thorough test coverage should be included, proving the code is functional and ready for future refactoring without risk of breaking any behavior.
+
+Complete application source code should be published to a separate git repository with a README file including any necessary instructions for initializing the app, seeding data, and executing the app, as well as running tests.
+
+Bonus points for ES6, linting, TDD, JSDoc, and production app best practices.
+
+List of articles:
+https://medcircle-coding-project.s3.amazonaws.com/api/articles.json
+
+Single article:
+https://medcircle-coding-project.s3.amazonaws.com/api/articles/1.json
+Note: You may use your own unique identifier field name and format for each article (e.g. _id: 'pAOPZmBBMI5pS9VC')
+
+Article {
+  id,
+  title,
+  body,
+  media_url,
+  published_at,
+  likes_count,
+  author_id
+}
+
+Author {
+  id,
+  name,
+  icon_url
+}
+
+Questions:
+  Can an article have more than 1 author?
+  What fields of an Article should be able to be updated? Just the title and body? Or should authorship be able to be transferred as well?
+  
